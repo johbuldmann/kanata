@@ -41,48 +41,38 @@
   nav_spc (tap-hold 200 200 spc (layer-toggle nav))
   sym_alt (tap-hold 200 200 ralt (layer-toggle symbols))
 
-  ;; --- Spezial Taps/Holds für Symbol Layer ---
-  ;; "hold Grave tap Dollar" -> Grave (`) ist Shift+´, Dollar ($) ist Shift+4
+  ;; --- Spezial Taps/Holds ---
   dol_grv (tap-hold 200 200 S-4 S-=) 
-  
-  ;; "hold acute tap tilde" -> Acute (´) ist =, Tilde (~) ist AltGr+]
   til_acu (tap-hold 200 200 RA-] =)
+  q_spec  (tap-hold 200 200 S-= S-4)
+  w_spec  (tap-hold 200 200 S-2 (macro S-= S-= S-=))
 
-  ;; Q-Position: "hold single quote tap backtick"
-  ;; Backtick (`) ist Shift+=, Single Quote (') ist Shift+4
-  q_spec (tap-hold 200 200 S-= S-4)
-
-  ;; W-Position: "hold double quote tap triple backtick"
-  ;; Da Kanata keine echten Text-Makros in tap-hold direkt mag, 
-  ;; senden wir hier Double Quote (Shift+2). Triple Backtick müsstest du 3x tippen
-  ;; oder wir nutzen ein Makro (siehe unten).
-  w_spec (tap-hold 200 200 S-2 (macro S-= S-= S-=))
-
-  ;; --- Standard Symbole ---
-  de_caret grv
-  de_lt    102d
-  de_gt    S-102d
-  de_perc  S-5
-  de_lbrc  RA-7
-  de_rbrc  RA-0
-  de_col   S-.
-  de_excl  S-1
-  de_min   /
-  de_plus  ]
-  de_eql   S-0
-  de_amp   S-6
-  de_hash  \
-  de_lpar  S-8
-  de_rpar  S-9
-  de_semi  S-,
-  de_at    RA-q
-  de_bsls  RA--
-  de_ast   S-]
-  de_slsh  S-7
-  de_pipe  RA-102d
-  de_lbkt  RA-8
-  de_rbkt  RA-9
-  de_und   S-/
+  ;; --- Deutsche Symbole Definitionen ---
+  de_caret grv        ;; ^
+  de_til   RA-]       ;; ~
+  de_lt    102d       ;; <
+  de_gt    S-102d     ;; >
+  de_perc  S-5        ;; %
+  de_lbrc  RA-7       ;; {
+  de_rbrc  RA-0       ;; }
+  de_col   S-.        ;; :
+  de_excl  S-1        ;; !
+  de_min   /          ;; -
+  de_plus  ]          ;; +
+  de_eql   S-0        ;; =
+  de_amp   S-6        ;; &
+  de_hash  \          ;; #
+  de_lpar  S-8        ;; (
+  de_rpar  S-9        ;; )
+  de_semi  S-,        ;; ;
+  de_at    RA-q       ;; @
+  de_bsls  RA--       ;; \
+  de_ast   S-]        ;; *
+  de_slsh  S-7        ;; /
+  de_pipe  RA-102d    ;; |
+  de_lbkt  RA-8       ;; [
+  de_rbkt  RA-9       ;; ]
+  de_und   S-/        ;; _
 )
 
 (deflayer default
@@ -102,15 +92,14 @@
 )
 
 (deflayer symbols
+  ;; Reihe 1 (14)
   esc  @de_caret _    _    _    _    _    _    _    _    _    _    _    _
-  tab  @q_spec @w_spec @de_lt @de_gt @de_perc _ @de_lbrc @de_rbrc @de_col @dol_grv @til_acu
-  lsft @de_excl @de_min @de_plus @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_at rsft
-  lctl @de_til @de_bsls @de_ast @de_slsh @de_pipe _ _ @de_lbkt @de_rbkt , . @de_und rctl
-  _    _    _              _              _    _
-)
-  esc  @de_caret _    _    _    _    _    _    _    _    _    _    _    _
-  tab  @de_sqt @de_dqt @de_lt @de_gt @de_perc _ @de_lbrc @de_rbrc @de_col @de_doll @de_til
-  lsft @de_excl @de_min @de_plus @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_at rsft
-  lctl @de_til @de_bsls @de_ast @de_slsh @de_pipe _ _ @de_lbkt @de_rbkt , . @de_und rctl
+  ;; Reihe 2 (14)
+  tab  @q_spec @w_spec @de_lt @de_gt @de_perc _ @de_lbrc @de_rbrc @de_col @dol_grv @til_acu _ _
+  ;; Reihe 3 (13)
+  lsft @de_excl @de_min @de_plus @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_at rsft _
+  ;; Reihe 4 (12)
+  lctl @de_til @de_bsls @de_ast @de_slsh @de_pipe _ _ @de_lbkt @de_rbkt @de_und rctl
+  ;; Reihe 5 (6)
   _    _    _              _              _    _
 )
