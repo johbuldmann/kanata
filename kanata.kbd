@@ -1,0 +1,20 @@
+;; Gäbe es in ZMK als: / { chosen { zmk,matrix_transform = &default_transform; }; };
+(defsrc
+  caps y x c v
+)
+
+;; Hier definierst du deine Layer und Home Row Mods
+(defalias
+  ;; tap-hold: 200ms timeout, tap = caps, hold = left control
+  cap (tap-hold 200 200 caps lctl)
+  
+  ;; Home Row Mods Beispiel (ZMK: &hm)
+  y_mod (tap-hold 200 200 y lmet)
+  x_mod (tap-hold 200 200 s lalt)
+  c_mod (tap-hold 200 200 d lsft)
+  v_mod (tap-hold 200 200 f lctl)
+)
+
+(deflayer default
+  @cap @y_mod @x_mod @c_mod @v_mod
+)
