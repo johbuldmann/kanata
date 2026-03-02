@@ -1,85 +1,51 @@
 (defcfg
   process-unmapped-keys yes
+  windows-altgr add-lctl-release
 )
 
 (defsrc
   esc  1    2    3    4    5    6    7    8    9    0    -    =    bspc
-  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
-  caps a    s    d    f    g    h    j    k    l    ;    '    ret
-  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    ret
+  caps a    s    d    f    g    h    j    k    l    ;    '    \
+  lsft 102d z    x    c    v    b    n    m    ,    .    /    rsft
   lctl lmet lalt           spc            ralt rctl
 )
 
-(defchords combos 50
-  (j k) bspc
-  (k l) del
-  (d k) esc
-  (u i) C-bspc
-  (d) d (u) u (i) i (j) j (k) k (l) l
-)
-
 (defalias
-  ;; --- Chords ---
-  ch_d (chord combos d)
-  ch_u (chord combos u)
-  ch_i (chord combos i)
-  ch_j (chord combos j)
-  ch_k (chord combos k)
-  ch_l (chord combos l)
-
-  ;; --- Home Row Mods ---
-  y_met (tap-hold 200 200 z lmet)
-  x_alt (tap-hold 200 200 x lalt)
-  c_sft (tap-hold 200 200 c lsft)
-  v_ctl (tap-hold 200 200 v lctl)
-  m_ctl (tap-hold 200 200 m rctl)
-  ,_sft (tap-hold 200 200 , rsft)
-  ._alt (tap-hold 200 200 . lalt)
-  -_met (tap-hold 200 200 / rmet)
-
-  ;; --- Layer Activation ---
+  ;; --- Layer Aktivierung (Optimiert) ---
   nav_spc (tap-hold 200 200 spc (layer-toggle nav))
-  sym_alt (tap-hold 200 200 ralt (layer-toggle symbols))
+  
+  ;; Hier ist die Änderung: 
+  ;; Wir nutzen tap-hold-press, um sicherzustellen, dass ralt 
+  ;; wirklich erst gesendet wird, wenn wir es brauchen.
+  sym_alt (tap-hold-release 200 200 ralt (layer-toggle symbols))
 
-  ;; --- Spezial Taps/Holds ---
-  dol_grv (tap-hold 200 200 S-4 S-=) 
-  til_acu (tap-hold 200 200 RA-] =)
-  q_spec  (tap-hold 200 200 S-= S-4)
-  w_spec  (tap-hold 200 200 S-2 (macro S-= S-= S-=))
-
-  ;; --- Deutsche Symbole Definitionen ---
-  de_caret grv        ;; ^
-  de_til   RA-]       ;; ~
-  de_lt    102d       ;; <
-  de_gt    S-102d     ;; >
-  de_perc  S-5        ;; %
-  de_lbrc  RA-7       ;; {
-  de_rbrc  RA-0       ;; }
-  de_col   S-.        ;; :
-  de_excl  S-1        ;; !
-  de_min   /          ;; -
-  de_plus  ]          ;; +
-  de_eql   S-0        ;; =
-  de_amp   S-6        ;; &
-  de_hash  \          ;; #
-  de_lpar  S-8        ;; (
-  de_rpar  S-9        ;; )
-  de_semi  S-,        ;; ;
-  de_at    RA-q       ;; @
-  de_bsls  RA--       ;; \
-  de_ast   S-]        ;; *
-  de_slsh  S-7        ;; /
-  de_pipe  RA-102d    ;; |
-  de_lbkt  RA-8       ;; [
-  de_rbkt  RA-9       ;; ]
-  de_und   S-/        ;; _
+  ;; --- Spezial Taps/Holds (Linke Hand Symbol Layer) ---
+  q_sym (tap-hold 200 200 S-4 (macro S-= spc))
+  w_sym (tap-hold 200 200 S-2 (macro S-= S-= S-= spc))
+  
+  ;; --- Symbole ---
+  de_caret (macro grv spc)
+  de_til   (macro RA-] spc)
+  de_lt    102d
+  de_gt    S-102d
+  de_perc  S-5
+  de_bsls  RA--
+  de_ast   S-]
+  de_slsh  S-7
+  de_pipe  RA-102d
+  de_lbrc  RA-7
+  de_rbrc  RA-0
+  de_lbkt  RA-8
+  de_rbkt  RA-9
+  de_und   S-/
 )
 
 (deflayer default
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    @ch_u @ch_i _    _    _    _    _
-  _    _    _    @ch_d _    _    _    @ch_j @ch_k @ch_l _    _    _
-  _    @y_met @x_alt @c_sft @v_ctl _ _ @m_ctl @,_sft @._alt @-_met _
+  _    _    _    _    _    _    _    (chord combos u) (chord combos i) _    _    _    _    _
+  _    _    _    (chord combos d) _    _    _    (chord combos j) (chord combos k) (chord combos l) _    _    _
+  _    _    (tap-hold 200 200 z lmet) (tap-hold 200 200 x lalt) (tap-hold 200 200 c lsft) (tap-hold 200 200 v lctl) _ _ (tap-hold 200 200 m rctl) (tap-hold 200 200 , rsft) (tap-hold 200 200 . lalt) (tap-hold 200 200 / rmet) _
   _    _    _              @nav_spc       @sym_alt _
 )
 
@@ -87,19 +53,19 @@
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    pgup up   pgdn _    _    _    _
   _    _    _    _    _    _    home left down rght end  _    _
-  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _              _              _    _
 )
 
 (deflayer symbols
-  ;; Reihe 1 (14)
   esc  @de_caret _    _    _    _    _    _    _    _    _    _    _    _
-  ;; Reihe 2 (14)
-  tab  @q_spec @w_spec @de_lt @de_gt @de_perc _ @de_lbrc @de_rbrc @de_col @dol_grv @til_acu _ _
-  ;; Reihe 3 (13)
-  lsft @de_excl @de_min @de_plus @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_at rsft _
-  ;; Reihe 4 (12)
-  lctl @de_til @de_bsls @de_ast @de_slsh @de_pipe _ _ @de_lbkt @de_rbkt @de_und rctl
-  ;; Reihe 5 (6)
+  tab  @q_sym @w_sym @de_lt @de_gt @de_perc _ @de_lbrc @de_rbrc S-. (tap-hold 200 200 S-4 (macro S-= spc)) (tap-hold 200 200 @de_til (macro = spc)) _ _
+  lsft S-1 / ] S-0 S-6 \ S-8 S-9 S-, RA-q _ _
+  _    @de_til @de_bsls @de_ast @de_slsh @de_pipe _ @de_lbkt @de_rbkt , . @de_und _
   _    _    _              _              _    _
+)
+
+(defchords combos 50
+  (j k) bspc (k l) del (d k) esc (u i) C-bspc
+  (d) d (u) u (i) i (j) j (k) k (l) l
 )
