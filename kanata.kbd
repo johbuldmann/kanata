@@ -11,18 +11,43 @@
 )
 
 (defchords combos 50
-  (j k) bspc
-  (k l) del
-  (d k) esc
-  (u i) C-bspc
-  (d) d (u) u (i) i (j) j (k) k (l) l
+  ;; --- System ---
+  (esc 1) f24              
+  (4 5) prnt               
+  (10 11) prnt             
+
+  ;; --- Editieren ---
+  (t y) C-bspc             
+  (y u) C-del              
+  (d f) bspc               
+  (f g) del                
+  (j k) bspc               
+  (k l) del                
+  (d k) esc                
+  (u i) C-bspc             
+  
+  ;; --- Office / Clipboard ---
+  (l ;) C-z                
+  (l ') C-y                
+  (; ') (tap-hold 200 200 C-c C-x) 
+  (' \) C-v                
+
+  ;; --- Symbole ---
+  (n m) (macro - S-102d)   
+  (, .) S-7                
+  (m ,) S-1                
+  
+  ;; Standalone Definitionen
+  (esc) esc (1) 1 (4) 4 (5) 5 (10) 0 (11) -
+  (t) t (y) y (u) u (i) i 
+  (d) d (f) f (g) g (j) j (k) k (l) l (;) ; (') ' (\) \
+  (n) n (m) m (,) , (.) .
 )
 
 (defalias
-  ;; --- Layer Activation ---
   nav_spc (tap-hold 200 200 spc (layer-toggle nav))
 
-  ;; --- Home Row Mods (Default Layer) ---
+  ;; Home Row Mods
   y_met (tap-hold 200 200 z lmet)
   x_alt (tap-hold 200 200 x lalt)
   c_sft (tap-hold 200 200 c lsft)
@@ -32,7 +57,18 @@
   ._alt (tap-hold 200 200 . lalt)
   -_met (tap-hold 200 200 / rmet)
 
-  ;; --- Nav Layer Aliase ---
+  ;; Chord Aliase
+  ch_esc (chord combos esc) ch_1 (chord combos 1)
+  ch_4 (chord combos 4) ch_5 (chord combos 5)
+  ch_0 (chord combos 10) ch_- (chord combos 11)
+  ch_t (chord combos t) ch_y (chord combos y) ch_u (chord combos u)
+  ch_i (chord combos i) ch_d (chord combos d) ch_f (chord combos f)
+  ch_g (chord combos g) ch_j (chord combos j) ch_k (chord combos k)
+  ch_l (chord combos l) ch_sem (chord combos ;) ch_quo (chord combos ')
+  ch_bsl (chord combos \) ch_n (chord combos n) ch_m (chord combos m)
+  ch_com (chord combos ,) ch_dot (chord combos .)
+
+  ;; Nav Aliase
   vd_l (tap-hold 150 150 f1 C-M-left)
   vd_r (tap-hold 150 150 f2 C-M-right)
   sel_w (macro C-left C-S-right)
@@ -45,33 +81,20 @@
   n_ctl_pd (tap-hold 200 200 pgdn rctl)
   n_sft_pu (tap-hold 200 200 pgup rsft)
   n_alt_cr (tap-hold 200 200 C-right lalt)
-
-  ;; Chords Helper
-  ch_d (chord combos d)
-  ch_u (chord combos u)
-  ch_i (chord combos i)
-  ch_j (chord combos j)
-  ch_k (chord combos k)
-  ch_l (chord combos l)
 )
 
 (deflayer default
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    @ch_u @ch_i _    _    _    _    _
-  _    _    _    @ch_d _    _    _    @ch_j @ch_k @ch_l _    _    _
-  _    _    @y_met @x_alt @c_sft @v_ctl _ _ @m_ctl @,_sft @._alt @-_met _
+  @ch_esc @ch_1   _    _    @ch_4 @ch_5 _    _    _    _    @ch_0 @ch_- _    _
+  _    _    _    _    _    @ch_t @ch_y @ch_u @ch_i _    _    _    _    _
+  _    _    _    @ch_d @ch_f @ch_g _    @ch_j @ch_k @ch_l @ch_sem @ch_quo @ch_bsl
+  lsft _ @y_met @x_alt @c_sft @v_ctl _  @ch_n @ch_m @ch_com @ch_dot @-_met _
   _    _    _              @nav_spc       _    _
 )
 
 (deflayer nav
-  ;; Reihe 1 (14 Tasten)
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12    _
-  ;; Reihe 2 (14 Tasten)
-  _  A-tab M-tab @vd_l @vd_r f4   _    home XX   @sel_w end  XX   XX  _
-  ;; Reihe 3 (13 Tasten) - hjkl = left down up right
-  _ @n_sh_a esc bspc del XX   left down up   rght S-ret _    _
-  ;; Reihe 4 (13 Tasten)
-  _ lrld @n_gui_y @n_alt_x @n_sft_c @n_ctl_v @v_spec C-left @n_ctl_pd @n_sft_pu @n_alt_cr lmet rctl
-  ;; Reihe 5 (6 Tasten)
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
+  _    A-tab M-tab @vd_l @vd_r f4   _    home XX   @sel_w end  XX   XX   _
+  _    @n_sh_a esc  bspc del  XX   left down up   rght S-ret _    _
+  _    lrld @n_gui_y @n_alt_x @n_sft_c @n_ctl_v @v_spec C-left @n_ctl_pd @n_sft_pu @n_alt_cr lmet rctl
   _    _    _              _              _    _
 )
