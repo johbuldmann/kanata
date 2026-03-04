@@ -1,6 +1,5 @@
 (defcfg
   process-unmapped-keys yes
-  windows-altgr add-lctl-release
 )
 
 (defsrc
@@ -11,61 +10,68 @@
   lctl lmet lalt           spc            ralt rctl
 )
 
-(defalias
-  ;; --- Layer Aktivierung (Optimiert) ---
-  nav_spc (tap-hold 200 200 spc (layer-toggle nav))
-  
-  ;; Hier ist die Änderung: 
-  ;; Wir nutzen tap-hold-press, um sicherzustellen, dass ralt 
-  ;; wirklich erst gesendet wird, wenn wir es brauchen.
-  sym_alt (tap-hold-release 200 200 ralt (layer-toggle symbols))
+(defchords combos 50
+  (j k) bspc
+  (k l) del
+  (d k) esc
+  (u i) C-bspc
+  (d) d (u) u (i) i (j) j (k) k (l) l
+)
 
-  ;; --- Spezial Taps/Holds (Linke Hand Symbol Layer) ---
-  q_sym (tap-hold 200 200 S-4 (macro S-= spc))
-  w_sym (tap-hold 200 200 S-2 (macro S-= S-= S-= spc))
-  
-  ;; --- Symbole ---
-  de_caret (macro grv spc)
-  de_til   (macro RA-] spc)
-  de_lt    102d
-  de_gt    S-102d
-  de_perc  S-5
-  de_bsls  RA--
-  de_ast   S-]
-  de_slsh  S-7
-  de_pipe  RA-102d
-  de_lbrc  RA-7
-  de_rbrc  RA-0
-  de_lbkt  RA-8
-  de_rbkt  RA-9
-  de_und   S-/
+(defalias
+  ;; --- Layer Activation ---
+  nav_spc (tap-hold 200 200 spc (layer-toggle nav))
+
+  ;; --- Home Row Mods (Default Layer) ---
+  y_met (tap-hold 200 200 z lmet)
+  x_alt (tap-hold 200 200 x lalt)
+  c_sft (tap-hold 200 200 c lsft)
+  v_ctl (tap-hold 200 200 v lctl)
+  m_ctl (tap-hold 200 200 m rctl)
+  ,_sft (tap-hold 200 200 , rsft)
+  ._alt (tap-hold 200 200 . lalt)
+  -_met (tap-hold 200 200 / rmet)
+
+  ;; --- Nav Layer Aliase ---
+  vd_l (tap-hold 150 150 f1 C-M-left)
+  vd_r (tap-hold 150 150 f2 C-M-right)
+  sel_w (macro C-left C-S-right)
+  n_sh_a (tap-hold 200 200 C-a lsft)
+  n_gui_y (tap-hold 200 200 C-y lmet)
+  n_alt_x (tap-hold 200 200 C-x lalt)
+  n_sft_c (tap-hold 200 200 C-c lsft)
+  n_ctl_v (tap-hold 200 200 C-v lctl)
+  v_spec (tap-hold 150 150 M-v C-S-v)
+  n_ctl_pd (tap-hold 200 200 pgdn rctl)
+  n_sft_pu (tap-hold 200 200 pgup rsft)
+  n_alt_cr (tap-hold 200 200 C-right lalt)
+
+  ;; Chords Helper
+  ch_d (chord combos d)
+  ch_u (chord combos u)
+  ch_i (chord combos i)
+  ch_j (chord combos j)
+  ch_k (chord combos k)
+  ch_l (chord combos l)
 )
 
 (deflayer default
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    (chord combos u) (chord combos i) _    _    _    _    _
-  _    _    _    (chord combos d) _    _    _    (chord combos j) (chord combos k) (chord combos l) _    _    _
-  _    _    (tap-hold 200 200 z lmet) (tap-hold 200 200 x lalt) (tap-hold 200 200 c lsft) (tap-hold 200 200 v lctl) _ _ (tap-hold 200 200 m rctl) (tap-hold 200 200 , rsft) (tap-hold 200 200 . lalt) (tap-hold 200 200 / rmet) _
-  _    _    _              @nav_spc       @sym_alt _
+  _    _    _    _    _    _    _    @ch_u @ch_i _    _    _    _    _
+  _    _    _    @ch_d _    _    _    @ch_j @ch_k @ch_l _    _    _
+  _    _    @y_met @x_alt @c_sft @v_ctl _ _ @m_ctl @,_sft @._alt @-_met _
+  _    _    _              @nav_spc       _    _
 )
 
 (deflayer nav
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    pgup up   pgdn _    _    _    _
-  _    _    _    _    _    _    home left down rght end  _    _
-  _    _    _    _    _    _    _    _    _    _    _    _    _
+  ;; Reihe 1 (14 Tasten)
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12    _
+  ;; Reihe 2 (14 Tasten)
+  _  A-tab M-tab @vd_l @vd_r f4   _    home XX   @sel_w end  XX   XX  _
+  ;; Reihe 3 (13 Tasten) - hjkl = left down up right
+  _ @n_sh_a esc bspc del XX   left down up   rght S-ret _    _
+  ;; Reihe 4 (13 Tasten)
+  _ lrld @n_gui_y @n_alt_x @n_sft_c @n_ctl_v @v_spec C-left @n_ctl_pd @n_sft_pu @n_alt_cr lmet rctl
+  ;; Reihe 5 (6 Tasten)
   _    _    _              _              _    _
-)
-
-(deflayer symbols
-  esc  @de_caret _    _    _    _    _    _    _    _    _    _    _    _
-  tab  @q_sym @w_sym @de_lt @de_gt @de_perc _ @de_lbrc @de_rbrc S-. (tap-hold 200 200 S-4 (macro S-= spc)) (tap-hold 200 200 @de_til (macro = spc)) _ _
-  lsft S-1 / ] S-0 S-6 \ S-8 S-9 S-, RA-q _ _
-  _    @de_til @de_bsls @de_ast @de_slsh @de_pipe _ @de_lbkt @de_rbkt , . @de_und _
-  _    _    _              _              _    _
-)
-
-(defchords combos 50
-  (j k) bspc (k l) del (d k) esc (u i) C-bspc
-  (d) d (u) u (i) i (j) j (k) k (l) l
 )
