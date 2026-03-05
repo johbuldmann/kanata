@@ -3,34 +3,101 @@
 )
 
 (defvar
-  ;; Timings für das "Timeless" Feeling
+  ;; Timings
   tap-timeout 200
   hold-timeout 200
-  idle-timeout 150 ;; Zeit ohne Tippen, bis Mods/Chords wieder scharf sind
+  idle-timeout 150
 )
 
-;; --- NEU: Das fehlende Template ---
 (deftemplate t_raw (key)
   (multi $key @tap_log)
 )
 
 (defalias
-  ;; Die Logik: Springe in nomods und starte/resette den Idle-Timer
+  ;; --- Idle-Logik ---
   tap_log (multi 
     (layer-switch nomods) 
     (on-idle $idle-timeout tap-vkey back_to_default)
   )
-  
-  ;; Nav & Symbol Aliase (bleiben gleich)
+
+  ;; --- Layer Toggles ---
+  ;; Diese Aliase nutzen wir jetzt ÜBERALL (auch in nomods)
   nav_spc (tap-hold $tap-timeout $hold-timeout spc (layer-toggle nav))
-  -_met (tap-hold $tap-timeout $hold-timeout / rmet)
+  sym_f   (tap-hold $tap-timeout $hold-timeout f (layer-toggle symbols))
+  sym_j   (tap-hold $tap-timeout $hold-timeout j (layer-toggle symbols))
+  -_met   (tap-hold $tap-timeout $hold-timeout / rmet)
+
+  ;; --- Symbole als Macros (gegen den {0 Fehler) ---
+  ;; Macros sind beim schnellen Tippen oft stabiler als RA-Kombis
+  ;; Format: (macro taste verzögerung taste)
+  ;; --- Symbole (Stabil via RA-Kombination) ---
+  de_lbrc RA-7                ;; {
+  de_rbrc RA-0                ;; }
+  de_lbkt RA-8                ;; [
+  de_rbkt RA-9                ;; ]
+  de_pipe RA-102d             ;; |
+  de_at   RA-q                ;; @
+  de_til  RA-]                ;; ~
+  de_bsls RA--                ;; \
+
+  ;; Standard Symbole (bleiben gleich)
+  de_caret grv                
+  de_sqt   S-\                
+  de_min   /                  
+  de_lt    102d               
+  de_gt    S-102d             
+  de_perc  S-5                
+  de_col   S-.                
+  de_dol   S-4                
+  de_excl  S-1                
+  de_ast   S-]                
+  de_slsh  S-7                
+  de_eql   S-0                
+  de_amp   S-6                
+  de_hash  \                  
+  de_lpar  S-8                
+  de_rpar  S-9                
+  de_semi  S-,                
+  de_dquo  S-2                
+  de_plus  ]                  
+  de_und   S-/                
+
+  ;; Restliche Aliase (Deadkeys, Chords, Nav) bleiben wie sie waren...
+  m_gv_spc (macro S-= spc)  
+  m_car_spc (macro grv spc) 
+  m_bt3_spc (macro S-= spc S-= spc S-= spc)
+  q_sym (tap-hold 200 200 @de_sqt @m_gv_spc)    
+  w_sym (tap-hold 200 200 @de_min @m_bt3_spc)   
+
+  ch_esc (chord combos esc)  ch_f1  (chord combos f1)
+  ch_w   (chord combos w)    ch_e   (chord combos e)
+  ch_s   (chord combos s)    ch_d   (chord combos d)   ch_f (chord combos f)
+  ch_z_top (chord combos y)  ch_u   (chord combos u)   ch_i (chord combos i)
+  ch_o   (chord combos o)    ch_j   (chord combos j)   ch_k (chord combos k)
+  ch_l   (chord combos l)    ch_sem (chord combos ;)   ch_quo (chord combos ')
+  ch_bsl (chord combos \)    ch_102 (chord combos 102d) 
+  ch_y_bot (chord combos z)  ch_x   (chord combos x)   ch_c (chord combos c)
+  ch_v   (chord combos v)    ch_b   (chord combos b)   ch_m (chord combos m)
+  ch_com (chord combos ,)    ch_dot (chord combos .)
+
+  vd_l (tap-hold 150 150 f1 C-M-left)
+  vd_r (tap-hold 150 150 f2 C-M-right)
+  sel_w (macro C-left C-S-right)
+  n_sh_a (tap-hold 200 200 C-a lsft)
+  n_gui_y (tap-hold 200 200 C-y lmet)
+  n_alt_x (tap-hold 200 200 C-x lalt)
+  n_sft_c (tap-hold 200 200 C-c lsft)
+  n_ctl_v (tap-hold 200 200 C-v lctl)
+  v_spec (tap-hold 150 150 M-v C-S-v)
+  n_ctl_pd (tap-hold 200 200 pgdn rctl)
+  n_sft_pu (tap-hold 200 200 pgup rsft)
+  n_alt_cr (tap-hold 200 200 C-right lalt)
 )
 
 (defvirtualkeys
   back_to_default (layer-switch default)
 )
 
-;; --- DEIN SRC & CHORDS (Hier nichts ändern, außer Timings) ---
 (defsrc
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
@@ -40,8 +107,27 @@
   lctl lmet lalt           spc            ralt rctl
 )
 
-;; Deine Chords-Definition von oben hier einfügen...
-;; (Stelle sicher, dass du dort auch die Variablen $tap-timeout nutzt)
+(defchords combos 35
+  ;; --- Kombinationen ---
+  (esc f1) f24 (w e) f24 (d f) A-spc (s d) A-w (y u) C-y (u i) C-bspc (i o) C-bspc
+  (j k) bspc (k l) del (d k) esc (102d z) C-y (z x) C-x (x c) C-c (c v) C-v (v b) M-v
+  (; ') (tap-hold $tap-timeout $hold-timeout C-c C-x) (' \) C-v (, .) S-min (m ,) S-1
+
+  ;; --- Einzel-Tasten (V und B HIER REIN!) ---
+  (esc) esc (f1) f1 (w) w (e) e (s) s (d) d (y) y (u) u (i) i (o) o (k) k (l) l (;) ; (') ' (\) \
+  (v) v (b) b
+
+  ;; --- HRM & Layer Toggles ---
+  (f) @sym_f
+  (j) @sym_j
+  (102d) (tap-hold $tap-timeout $hold-timeout 102d lmet)
+  (z) (tap-hold $tap-timeout $hold-timeout z lalt) 
+  (x) (tap-hold $tap-timeout $hold-timeout x lsft)
+  (c) (tap-hold $tap-timeout $hold-timeout c lctl)
+  (m) (tap-hold $tap-timeout $hold-timeout m rctl)
+  (,) (tap-hold $tap-timeout $hold-timeout , rsft)
+  (.) (tap-hold $tap-timeout $hold-timeout . lalt)
+)
 
 (deflayer default
   @ch_esc @ch_f1  _    _    _    _    _    _    _    _    _    _    _
@@ -49,36 +135,32 @@
   _    _    @ch_w @ch_e _    _    @ch_z_top @ch_u @ch_i @ch_o _    _    _    _
   _    _    @ch_s @ch_d @ch_f _    _    @ch_j @ch_k @ch_l @ch_sem @ch_quo @ch_bsl
   lsft @ch_102 @ch_y_bot @ch_x @ch_c @ch_v @ch_b n    @ch_m @ch_com @ch_dot @-_met _
-  _    _    _              @nav_spc       _    _
+  lctl lmet lalt           @nav_spc       ralt rctl
 )
 
-;; --- LAYER: NOMODS (Die "Sicherheitszone") ---
-;; Jede Taste hier nutzt jetzt korrekt das Template (t! t_raw ...)
 (deflayer nomods
   _    _    _    _    _    _    _    _    _    _    _    _    _
   _    (t! t_raw 1) (t! t_raw 2) (t! t_raw 3) (t! t_raw 4) (t! t_raw 5) (t! t_raw 6) (t! t_raw 7) (t! t_raw 8) (t! t_raw 9) (t! t_raw 0) _ _ _
   _    (t! t_raw q) (t! t_raw w) (t! t_raw e) (t! t_raw r) (t! t_raw t) (t! t_raw y) (t! t_raw u) (t! t_raw i) (t! t_raw o) (t! t_raw p) _ _ _
-  _    (t! t_raw a) (t! t_raw s) (t! t_raw d) (t! t_raw f) (t! t_raw g) (t! t_raw h) (t! t_raw j) (t! t_raw k) (t! t_raw l) (t! t_raw ;) _ _
+  _    (t! t_raw a) (t! t_raw s) (t! t_raw d) @sym_f (t! t_raw g) (t! t_raw h) @sym_j (t! t_raw k) (t! t_raw l) (t! t_raw ;) _ _
   _    (t! t_raw 102d) (t! t_raw z) (t! t_raw x) (t! t_raw c) (t! t_raw v) (t! t_raw b) (t! t_raw n) (t! t_raw m) (t! t_raw ,) (t! t_raw .) _ _
-  _    _    _              spc            _    _
+  _    _    _              @nav_spc       _    _
 )
 
 (deflayer symbols
-  ;; Hier deine Symbole einfügen (wie in deinem ersten Post)
-  _ _ _ _ _ _ _ _ _ _ _ _ _
-  _ _ _ _ _ _ _ _ _ _ _ _ _ _
-  _ @q_sym @w_sym _ _ _ _ _ _ _ _ _ _ _
-  _ _ _ _ _ _ _ _ _ _ _ _ _
-  _ _ _ _ _ _ _ _ _ _ _ _ _
-  _ _ _ _ _ _
+  esc  @m_car_spc _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  XX   @q_sym @w_sym @de_lt @de_gt @de_perc @m_car_spc @de_lbrc @de_rbrc @de_col @de_dol XX XX XX
+  _    @de_excl @de_ast @de_slsh @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_dquo @de_bsls XX
+  _    @de_til @de_plus @de_lbkt @de_rbkt @de_pipe _ @de_at @de_dol , . @de_und XX
+  _    _    _              _              _    _
 )
 
 (deflayer nav
-  ;; Hier deine Nav-Belegung einfügen (wie in deinem ersten Post)
-  _ _ _ _ _ _ _ _ _ _ _ _ _
-  _ _ _ _ _ _ _ _ _ _ _ _ _ _
-  _ _ _ _ _ _ _ _ _ _ _ _ _ _
-  _ _ _ _ _ _ _ _ _ _ _ _ _
-  _ _ _ _ _ _ _ _ _ _ _ _ _
-  _ _ _ _ _ _
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
+  _    A-tab M-tab @vd_l @vd_r f4   C-y   home    @sel_w end   XX   XX   _ _
+  _    @n_sh_a esc  bspc del   XX   left down up    rght ret _    _
+  _    lrld @n_gui_y @n_alt_x @n_sft_c @n_ctl_v @v_spec C-left @n_ctl_pd @n_sft_pu @n_alt_cr lmet rctl
+  _    _    _              _              _    _
 )
