@@ -1,12 +1,20 @@
+SetWorkingDir %A_ScriptDir%
+
 KanataExe := "kanata_windows_tty_winIOv2_x64.exe"
 ConfigFile := "kanata.kbd"
 
-SetWorkingDir %A_ScriptDir%
-; Process, Close, %KanataExe%
-Run, %KanataExe% -cfg %ConfigFile%
-; Run, %KanataExe% -cfg %ConfigFile%, , hide
+Run, wt.exe -w 0 new-tab -d "%A_ScriptDir%" cmd /k ""%KanataExe%" --cfg "%ConfigFile%""
+
 MsgBox, 64, Kanata Status, Kanata wurde gestartet!, 2
 
+WinWait, ahk_exe PccNt.exe, , 5 ; Wartet max. 5 Sekunden
+if (!ErrorLevel) {
+    WinActivate, ahk_exe PccNt.exe
+    Sleep, 200
+    Send, +{Tab}
+    Sleep, 100
+    Send, {Enter}
+}
 
 /*
 ================================================================================
