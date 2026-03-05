@@ -21,15 +21,11 @@
   )
 
   ;; --- Layer Toggles ---
-  ;; Diese Aliase nutzen wir jetzt ÜBERALL (auch in nomods)
   nav_spc (tap-hold $tap-timeout $hold-timeout spc (layer-toggle nav))
-  sym_f   (tap-hold $tap-timeout $hold-timeout f (layer-toggle symbols))
-  sym_j   (tap-hold $tap-timeout $hold-timeout j (layer-toggle symbols))
+  sym_v   (tap-hold $tap-timeout $hold-timeout v (layer-toggle symbols))
+  sym_n   (tap-hold $tap-timeout $hold-timeout n (layer-toggle symbols))
   -_met   (tap-hold $tap-timeout $hold-timeout / rmet)
 
-  ;; --- Symbole als Macros (gegen den {0 Fehler) ---
-  ;; Macros sind beim schnellen Tippen oft stabiler als RA-Kombis
-  ;; Format: (macro taste verzögerung taste)
   ;; --- Symbole (Stabil via RA-Kombination) ---
   de_lbrc RA-7                ;; {
   de_rbrc RA-0                ;; }
@@ -39,8 +35,6 @@
   de_at   RA-q                ;; @
   de_til  RA-]                ;; ~
   de_bsls RA--                ;; \
-
-  ;; Standard Symbole (bleiben gleich)
   de_caret grv                
   de_sqt   S-\                
   de_min   /                  
@@ -62,22 +56,23 @@
   de_plus  ]                  
   de_und   S-/                
 
-  ;; Restliche Aliase (Deadkeys, Chords, Nav) bleiben wie sie waren...
   m_gv_spc (macro S-= spc)  
   m_car_spc (macro grv spc) 
   m_bt3_spc (macro S-= spc S-= spc S-= spc)
   q_sym (tap-hold 200 200 @de_sqt @m_gv_spc)    
   w_sym (tap-hold 200 200 @de_min @m_bt3_spc)   
 
-  ch_esc (chord combos esc)  ch_f1  (chord combos f1)
+  ;; --- Chord Aliase für Layer ---
+  ch_esc (chord combos esc)  ch_f1   (chord combos f1)
   ch_w   (chord combos w)    ch_e   (chord combos e)
-  ch_s   (chord combos s)    ch_d   (chord combos d)   ch_f (chord combos f)
-  ch_z_top (chord combos y)  ch_u   (chord combos u)   ch_i (chord combos i)
-  ch_o   (chord combos o)    ch_j   (chord combos j)   ch_k (chord combos k)
-  ch_l   (chord combos l)    ch_sem (chord combos ;)   ch_quo (chord combos ')
+  ch_a   (chord combos a)    ch_s   (chord combos s)    ch_d (chord combos d) ch_f (chord combos f)
+  ch_g   (chord combos g)    ch_h   (chord combos h)
+  ch_z_top (chord combos y)  ch_u   (chord combos u)    ch_i (chord combos i)
+  ch_o   (chord combos o)    ch_j   (chord combos j)    ch_k (chord combos k)
+  ch_l   (chord combos l)    ch_sem (chord combos ;)    ch_quo (chord combos ')
   ch_bsl (chord combos \)    ch_102 (chord combos 102d) 
-  ch_y_bot (chord combos z)  ch_x   (chord combos x)   ch_c (chord combos c)
-  ch_v   (chord combos v)    ch_b   (chord combos b)   ch_m (chord combos m)
+  ch_y_bot (chord combos z)  ch_x   (chord combos x)    ch_c (chord combos c)
+  ch_v   (chord combos v)    ch_b   (chord combos b)    ch_n (chord combos n) ch_m (chord combos m)
   ch_com (chord combos ,)    ch_dot (chord combos .)
 
   vd_l (tap-hold 150 150 f1 C-M-left)
@@ -104,7 +99,7 @@
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    ret
   caps a    s    d    f    g    h    j    k    l    ;    '    \
   lsft 102d z    x    c    v    b    n    m    ,    .    /    rsft
-  lctl lmet lalt           spc            ralt rctl
+  lctl lmet lalt            spc            ralt rctl
 )
 
 (defchords combos 35
@@ -113,37 +108,40 @@
   (j k) bspc (k l) del (d k) esc (102d z) C-y (z x) C-x (x c) C-c (c v) C-v (v b) M-v
   (; ') (tap-hold $tap-timeout $hold-timeout C-c C-x) (' \) C-v (, .) S-min (m ,) S-1
 
-  ;; --- Einzel-Tasten (V und B HIER REIN!) ---
-  (esc) esc (f1) f1 (w) w (e) e (s) s (d) d (y) y (u) u (i) i (o) o (k) k (l) l (;) ; (') ' (\) \
-  (v) v (b) b
+  ;; --- Einzel-Tasten (Eindeutig!) ---
+  (esc) esc (f1) f1 (w) w (e) e (g) g (h) h (y) y (u) u (i) i (o) o 
+  (') ' (\) \ (b) b (102d) 102d (z) z (x) x (c) c (m) m (,) , (.) .
 
-  ;; --- HRM & Layer Toggles ---
-  (f) @sym_f
-  (j) @sym_j
-  (102d) (tap-hold $tap-timeout $hold-timeout 102d lmet)
-  (z) (tap-hold $tap-timeout $hold-timeout z lalt) 
-  (x) (tap-hold $tap-timeout $hold-timeout x lsft)
-  (c) (tap-hold $tap-timeout $hold-timeout c lctl)
-  (m) (tap-hold $tap-timeout $hold-timeout m rctl)
-  (,) (tap-hold $tap-timeout $hold-timeout , rsft)
-  (.) (tap-hold $tap-timeout $hold-timeout . lalt)
+  ;; --- HRM auf ASDF und JKL; ---
+  (a) (tap-hold $tap-timeout $hold-timeout a lmet)
+  (s) (tap-hold $tap-timeout $hold-timeout s lalt)
+  (d) (tap-hold $tap-timeout $hold-timeout d lsft)
+  (f) (tap-hold $tap-timeout $hold-timeout f lctl)
+  (j) (tap-hold $tap-timeout $hold-timeout j rctl)
+  (k) (tap-hold $tap-timeout $hold-timeout k rsft)
+  (l) (tap-hold $tap-timeout $hold-timeout l lalt)
+  (;) (tap-hold $tap-timeout $hold-timeout ; rmet)
+
+  ;; --- Layer Toggles auf V und N ---
+  (v) @sym_v
+  (n) @sym_n
 )
 
 (deflayer default
   @ch_esc @ch_f1  _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    @ch_w @ch_e _    _    @ch_z_top @ch_u @ch_i @ch_o _    _    _    _
-  _    _    @ch_s @ch_d @ch_f _    _    @ch_j @ch_k @ch_l @ch_sem @ch_quo @ch_bsl
-  lsft @ch_102 @ch_y_bot @ch_x @ch_c @ch_v @ch_b n    @ch_m @ch_com @ch_dot @-_met _
-  lctl lmet lalt           @nav_spc       ralt rctl
+  _    @ch_a @ch_s @ch_d @ch_f @ch_g @ch_h @ch_j @ch_k @ch_l @ch_sem @ch_quo @ch_bsl
+  lsft @ch_102 @ch_y_bot @ch_x @ch_c @ch_v @ch_b @ch_n @ch_m @ch_com @ch_dot @-_met _
+  lctl lmet lalt            @nav_spc       ralt rctl
 )
 
 (deflayer nomods
   _    _    _    _    _    _    _    _    _    _    _    _    _
   _    (t! t_raw 1) (t! t_raw 2) (t! t_raw 3) (t! t_raw 4) (t! t_raw 5) (t! t_raw 6) (t! t_raw 7) (t! t_raw 8) (t! t_raw 9) (t! t_raw 0) _ _ _
   _    (t! t_raw q) (t! t_raw w) (t! t_raw e) (t! t_raw r) (t! t_raw t) (t! t_raw y) (t! t_raw u) (t! t_raw i) (t! t_raw o) (t! t_raw p) _ _ _
-  _    (t! t_raw a) (t! t_raw s) (t! t_raw d) @sym_f (t! t_raw g) (t! t_raw h) @sym_j (t! t_raw k) (t! t_raw l) (t! t_raw ;) _ _
-  _    (t! t_raw 102d) (t! t_raw z) (t! t_raw x) (t! t_raw c) (t! t_raw v) (t! t_raw b) (t! t_raw n) (t! t_raw m) (t! t_raw ,) (t! t_raw .) _ _
+  _    (t! t_raw a) (t! t_raw s) (t! t_raw d) (t! t_raw f) (t! t_raw g) (t! t_raw h) (t! t_raw j) (t! t_raw k) (t! t_raw l) (t! t_raw ;) _ _
+  _    (t! t_raw 102d) (t! t_raw z) (t! t_raw x) (t! t_raw c) @sym_v (t! t_raw b) @sym_n (t! t_raw m) (t! t_raw ,) (t! t_raw .) _ _
   _    _    _              @nav_spc       _    _
 )
 
