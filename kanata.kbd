@@ -11,66 +11,8 @@
   lctl lmet lalt           spc            ralt rctl
 )
 
-(defchords combos 26
-  ;; --- System & Launcher ---
-  (esc f1) f24               ;; Minimize
-  (w e) f24                  ;; Minimize (Alternative)
-  (d f) A-spc                ;; Flow Launcher (Alt + Space)
-  (s d) A-w                  ;; Window Changer (Alt + W)
-
-  ;; --- Editieren & Wort-Navigation ---
-  (y u) C-y                  ;; Undo/Redo (Je nach Layout-Logik)
-  (u i) C-bspc               ;; Ctrl + Backspacj
-  (i o) C-del                ;; Ctrl + Backspace (Neu)
-  (j k) bspc                 ;; Backspace
-  (k l) del                  ;; Delete
-  (d k) esc                  ;; Escape
-
-  ;; --- Clipboard & Undo (Reihe 4) ---
-  (102d z) C-y               ;; Undo (DE: < + y)
-  (z x) C-x                  ;; Cut
-  (x c) C-c                  ;; Copy
-  (c v) C-v                  ;; Paste
-  (v b) M-v                  ;; Windows Clipboard History (Win + V)
-  (; ') (tap-hold 200 200 C-c C-x) ;; Rechte Hand Copy/Cut Backup
-  (' \) C-v                  ;; Rechte Hand Paste Backup
-
-  ;; --- Symbole ---
-  (, .) S-min                ;; Fragezeichen ? (Shift + ß)
-  (m ,) S-1                  ;; Ausrufezeichen ! (Shift + 1)
-  
-  ;; Standalone Definitionen (Pflicht)
-  (esc) esc (f1) f1 (w) w (e) e (s) s (d) d (f) f
-  (y) y (u) u (i) i (o) o (j) j (k) k (l) l (;) ; (') ' (\) \
-  (102d) 102d (z) z (x) x (c) c (v) v (b) b (m) m (,) , (.) .
-)
-
 (defalias
-  nav_spc (tap-hold 200 200 spc (layer-toggle nav))
-
-  ;; Home Row Mods (Default Layer)
-  y_met (tap-hold 200 200 z lmet)
-  x_alt (tap-hold 200 200 x lalt)
-  c_sft (tap-hold 200 200 c lsft)
-  v_ctl (tap-hold 200 200 v lctl)
-  m_ctl (tap-hold 200 200 m rctl)
-  ,_sft (tap-hold 200 200 , rsft)
-  ._alt (tap-hold 200 200 . lalt)
-  -_met (tap-hold 200 200 / rmet)
-
-  ;; Chord Aliase für das Layout
-  ch_esc (chord combos esc)  ch_f1  (chord combos f1)
-  ch_w   (chord combos w)    ch_e   (chord combos e)
-  ch_s   (chord combos s)    ch_d   (chord combos d)   ch_f (chord combos f)
-  ch_y   (chord combos y)    ch_u   (chord combos u)   ch_i (chord combos i)
-  ch_o   (chord combos o)    ch_j   (chord combos j)   ch_k (chord combos k)
-  ch_l   (chord combos l)    ch_sem (chord combos ;)   ch_quo (chord combos ')
-  ch_bsl (chord combos \)    ch_102 (chord combos 102d) ch_z (chord combos z)
-  ch_x   (chord combos x)    ch_c   (chord combos c)   ch_v (chord combos v)
-  ch_b   (chord combos b)    ch_m   (chord combos m)   ch_com (chord combos ,)
-  ch_dot (chord combos .)
-
-  ;; Nav Layer Aliase
+  ;; --- Nav Layer Aliase ---
   vd_l (tap-hold 150 150 f1 C-M-left)
   vd_r (tap-hold 150 150 f2 C-M-right)
   sel_w (macro C-left C-S-right)
@@ -83,21 +25,127 @@
   n_ctl_pd (tap-hold 200 200 pgdn rctl)
   n_sft_pu (tap-hold 200 200 pgup rsft)
   n_alt_cr (tap-hold 200 200 C-right lalt)
+  
+  nav_spc (tap-hold 200 200 spc (layer-toggle nav))
+  -_met (tap-hold 200 200 / rmet)
+
+  ;; --- Symbol Aliase ---
+  de_caret grv               
+  de_sqt   S-\               
+  de_min   /                 
+  de_lt    102d              
+  de_gt    S-102d            
+  de_perc  S-5               
+  de_lbrc  RA-7              
+  de_rbrc  RA-0              
+  de_col   S-.               
+  de_dol   S-4               
+  de_excl  S-1               
+  de_ast   S-]               
+  de_slsh  S-7               
+  de_eql   S-0               
+  de_amp   S-6               
+  de_hash  \                 
+  de_lpar  S-8               
+  de_rpar  S-9               
+  de_semi  S-,               
+  de_dquo  S-2               
+  de_bsls  RA--              
+  de_til   RA-]              
+  de_plus  ]                 
+  de_lbkt  RA-8              
+  de_rbkt  RA-9              
+  de_pipe  RA-102d           
+  de_at    RA-q              
+  de_und   S-/               
+
+  ;; Deadkey Fixes (Zeichen + Leertaste)
+  m_gv_spc (macro S-= spc)                      ;; `
+  m_car_spc (macro grv spc)                     ;; ^
+  m_bt3_spc (macro S-= spc S-= spc S-= spc)     ;; ```
+
+  ;; Spezielle Tap-Holds für Q und W
+  q_sym (tap-hold 200 200 @de_sqt @m_gv_spc)    
+  w_sym (tap-hold 200 200 @de_min @m_bt3_spc)   
+
+  ;; Chord Aliase
+  ch_esc (chord combos esc)  ch_f1  (chord combos f1)
+  ch_w   (chord combos w)    ch_e   (chord combos e)
+  ch_s   (chord combos s)    ch_d   (chord combos d)   ch_f (chord combos f)
+  ch_z_top (chord combos y)  ch_u   (chord combos u)   ch_i (chord combos i)
+  ch_o   (chord combos o)    ch_j   (chord combos j)   ch_k (chord combos k)
+  ch_l   (chord combos l)    ch_sem (chord combos ;)   ch_quo (chord combos ')
+  ch_bsl (chord combos \)    ch_102 (chord combos 102d) 
+  ch_y_bot (chord combos z)  ch_x   (chord combos x)   ch_c (chord combos c)
+  ch_v   (chord combos v)    ch_b   (chord combos b)   ch_m (chord combos m)
+  ch_com (chord combos ,)    ch_dot (chord combos .)
+)
+
+(defchords combos 35
+  (esc f1) f24              
+  (w e) f24                 
+  (d f) A-spc               
+  (s d) A-w                 
+  (y u) C-y                 
+  (u i) C-bspc              
+  (i o) C-bspc              
+  (j k) bspc                
+  (k l) del                 
+  (d k) esc                 
+  (102d z) C-y              
+  (z x) C-x                 
+  (x c) C-c                 
+  (c v) C-v                 
+  (v b) M-v                 
+  (; ') (tap-hold 200 200 C-c C-x) 
+  (' \) C-v                 
+  (, .) S-min               
+  (m ,) S-1                 
+  
+  (esc) esc (f1) f1 (w) w (e) e (s) s (d) d 
+  (f) (tap-hold 200 200 f (layer-toggle symbols))
+  (y) y                     
+  (u) u (i) i (o) o 
+  (j) (tap-hold 200 200 j (layer-toggle symbols))
+  (k) k (l) l (;) ; (') ' (\) \
+  (102d) (tap-hold 200 200 102d lmet)
+  (z) (tap-hold 200 200 z lalt) 
+  (x) (tap-hold 200 200 x lsft)
+  (c) (tap-hold 200 200 c lctl)
+  (v) v (b) b 
+  (m) (tap-hold 200 200 m rctl)
+  (,) (tap-hold 200 200 , rsft)
+  (.) (tap-hold 200 200 . lalt)
 )
 
 (deflayer default
   @ch_esc @ch_f1  _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    @ch_w @ch_e _    _    @ch_y @ch_u @ch_i @ch_o _    _    _    _
+  _    _    @ch_w @ch_e _    _    @ch_z_top @ch_u @ch_i @ch_o _    _    _    _
   _    _    @ch_s @ch_d @ch_f _    _    @ch_j @ch_k @ch_l @ch_sem @ch_quo @ch_bsl
-  lsft @ch_102 @ch_z @ch_x @ch_c @ch_v @ch_b _    @ch_m @ch_com @ch_dot @-_met _
+  lsft @ch_102 @ch_y_bot @ch_x @ch_c @ch_v @ch_b n    @ch_m @ch_com @ch_dot @-_met _
   _    _    _              @nav_spc       _    _
+)
+
+(deflayer symbols
+  ;; F-Reihe
+  esc  @m_car_spc _    _    _    _    _    _    _    _    _    _    _
+  ;; Zahlen-Reihe
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  ;; QWERTZ-Reihe
+  XX  @q_sym @w_sym @de_lt @de_gt @de_perc @m_car_spc @de_lbrc @de_rbrc @de_col @de_dol XX XX XX
+  ;; ASDF-Reihe
+  _    @de_excl @de_ast @de_slsh @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_dquo @de_bsls XX
+  ;; ZXCV-Reihe
+  _    @de_til @de_plus @de_lbkt @de_rbkt @de_pipe _ @de_at @de_dol , . @de_und XX
+  ;; Daumen
+  _    _    _              _              _    _
 )
 
 (deflayer nav
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
-  _    A-tab M-tab @vd_l @vd_r f4   _    home   @sel_w end XX  XX   XX   _
+  _    A-tab M-tab @vd_l @vd_r f4   C-y    home    @sel_w end  XX   XX   _ _
   _    @n_sh_a esc  bspc del  XX   left down up   rght S-ret _    _
   _    lrld @n_gui_y @n_alt_x @n_sft_c @n_ctl_v @v_spec C-left @n_ctl_pd @n_sft_pu @n_alt_cr lmet rctl
   _    _    _              _              _    _
