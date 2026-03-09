@@ -1,0 +1,2 @@
+# Erzwinge LF (Unix) für alle kbd Dateien
+*.kbd text eol=lf

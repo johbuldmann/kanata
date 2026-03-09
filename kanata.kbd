@@ -1,3 +1,4 @@
+;; config mit bottom row mods, pinky shift und j als symbol-layer
 (defcfg
   process-unmapped-keys yes
 )
@@ -15,21 +16,21 @@
 
 (defalias
   ;; --- Idle-Logik ---
-  tap_log (multi 
-    (layer-switch nomods) 
+  tap_log (multi
+    (layer-switch nomods)
     (on-idle $idle-timeout tap-vkey back_to_default)
   )
 
   ;; --- Layer Toggles ---
-  ;; Diese Aliase nutzen wir jetzt ÜBERALL (auch in nomods)
   nav_spc (tap-hold $tap-timeout $hold-timeout spc (layer-toggle nav))
   sym_f   (tap-hold $tap-timeout $hold-timeout f (layer-toggle symbols))
   sym_j   (tap-hold $tap-timeout $hold-timeout j (layer-toggle symbols))
   -_met   (tap-hold $tap-timeout $hold-timeout / rmet)
 
-  ;; --- Symbole als Macros (gegen den {0 Fehler) ---
-  ;; Macros sind beim schnellen Tippen oft stabiler als RA-Kombis
-  ;; Format: (macro taste verzögerung taste)
+  ;; --- Pinky Shift Aliase ---
+  a_sft   (tap-hold $tap-timeout $hold-timeout a lsft)
+  sem_sft (tap-hold $tap-timeout $hold-timeout ; rsft)
+
   ;; --- Symbole (Stabil via RA-Kombination) ---
   de_lbrc RA-7                ;; {
   de_rbrc RA-0                ;; }
@@ -40,42 +41,44 @@
   de_til  RA-]                ;; ~
   de_bsls RA--                ;; \
 
-  ;; Standard Symbole (bleiben gleich)
-  de_caret grv                
-  de_sqt   S-\                
-  de_min   /                  
-  de_lt    102d               
-  de_gt    S-102d             
-  de_perc  S-5                
-  de_col   S-.                
-  de_dol   S-4                
-  de_excl  S-1                
-  de_ast   S-]                
-  de_slsh  S-7                
-  de_eql   S-0                
-  de_amp   S-6                
-  de_hash  \                  
-  de_lpar  S-8                
-  de_rpar  S-9                
-  de_semi  S-,                
-  de_dquo  S-2                
-  de_plus  ]                  
-  de_und   S-/                
+  ;; Standard Symbole
+  de_caret grv
+  de_sqt   S-\
+  de_min   /
+  de_lt    102d
+  de_gt    S-102d
+  de_perc  S-5
+  de_col   S-.
+  de_dol   S-4
+  de_excl  S-1
+  de_ast   S-]
+  de_slsh  S-7
+  de_eql   S-0
+  de_amp   S-6
+  de_hash  \
+  de_lpar  S-8
+  de_rpar  S-9
+  de_semi  S-,
+  de_dquo  S-2
+  de_plus  ]
+  de_und   S-/
 
   ;; Restliche Aliase (Deadkeys, Chords, Nav) bleiben wie sie waren...
   m_gv_spc (macro S-= spc)  
   m_car_spc (macro grv spc) 
   m_bt3_spc (macro S-= spc S-= spc S-= spc)
-  q_sym (tap-hold 200 200 @de_sqt @m_gv_spc)    
-  w_sym (tap-hold 200 200 @de_min @m_bt3_spc)   
+  q_sym (tap-hold 200 200 @de_sqt @m_gv_spc)
+  w_sym (tap-hold 200 200 @de_min @m_bt3_spc)
 
+  ;; Chords Aliase
   ch_esc (chord combos esc)  ch_f1  (chord combos f1)
   ch_w   (chord combos w)    ch_e   (chord combos e)
   ch_s   (chord combos s)    ch_d   (chord combos d)   ch_f (chord combos f)
+  ch_a   (chord combos a)
   ch_z_top (chord combos y)  ch_u   (chord combos u)   ch_i (chord combos i)
   ch_o   (chord combos o)    ch_j   (chord combos j)   ch_k (chord combos k)
   ch_l   (chord combos l)    ch_sem (chord combos ;)   ch_quo (chord combos ')
-  ch_bsl (chord combos \)    ch_102 (chord combos 102d) 
+  ch_bsl (chord combos \)    ch_102 (chord combos 102d)
   ch_y_bot (chord combos z)  ch_x   (chord combos x)   ch_c (chord combos c)
   ch_v   (chord combos v)    ch_b   (chord combos b)   ch_m (chord combos m)
   ch_com (chord combos ,)    ch_dot (chord combos .)
@@ -113,15 +116,20 @@
   (j k) bspc (k l) del (d k) esc (102d z) C-y (z x) C-x (x c) C-c (c v) C-v (v b) M-v
   (; ') (tap-hold $tap-timeout $hold-timeout C-c C-x) (' \) C-v (, .) S-min (m ,) S-1
 
-  ;; --- Einzel-Tasten (V und B HIER REIN!) ---
-  (esc) esc (f1) f1 (w) w (e) e (s) s (d) d (y) y (u) u (i) i (o) o (k) k (l) l (;) ; (') ' (\) \
-  (v) v (b) b
+  ;; --- Einzel-Tasten (WICHTIG: Hier fehlten ' und \) ---
+  (esc) esc (f1) f1 (w) w (e) e (s) s (d) d (y) y (u) u (i) i (o) o (k) k (l) l (v) v (b) b
+  (') '   ;; Das ist dein ä
+  (\) \   ;; Das ist dein #
+
+  ;; Pinky Shift Integration
+  (a) @a_sft
+  (;) @sem_sft
 
   ;; --- HRM & Layer Toggles ---
   (f) @sym_f
   (j) @sym_j
   (102d) (tap-hold $tap-timeout $hold-timeout 102d lmet)
-  (z) (tap-hold $tap-timeout $hold-timeout z lalt) 
+  (z) (tap-hold $tap-timeout $hold-timeout z lalt)
   (x) (tap-hold $tap-timeout $hold-timeout x lsft)
   (c) (tap-hold $tap-timeout $hold-timeout c lctl)
   (m) (tap-hold $tap-timeout $hold-timeout m rctl)
@@ -133,11 +141,12 @@
   @ch_esc @ch_f1  _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    @ch_w @ch_e _    _    @ch_z_top @ch_u @ch_i @ch_o _    _    _    _
-  _    _    @ch_s @ch_d @ch_f _    _    @ch_j @ch_k @ch_l @ch_sem @ch_quo @ch_bsl
+  _    @ch_a @ch_s @ch_d @ch_f _    _    @ch_j @ch_k @ch_l @ch_sem @ch_quo @ch_bsl
   lsft @ch_102 @ch_y_bot @ch_x @ch_c @ch_v @ch_b n    @ch_m @ch_com @ch_dot @-_met _
   lctl lmet lalt           @nav_spc       ralt rctl
 )
 
+;; nomods, symbols und nav bleiben identisch...
 (deflayer nomods
   _    _    _    _    _    _    _    _    _    _    _    _    _
   _    (t! t_raw 1) (t! t_raw 2) (t! t_raw 3) (t! t_raw 4) (t! t_raw 5) (t! t_raw 6) (t! t_raw 7) (t! t_raw 8) (t! t_raw 9) (t! t_raw 0) _ _ _
@@ -148,7 +157,7 @@
 )
 
 (deflayer symbols
-  esc  @m_car_spc _    _    _    _    _    _    _    _    _    _    _
+  _   _   _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   XX   @q_sym @w_sym @de_lt @de_gt @de_perc @m_car_spc @de_lbrc @de_rbrc @de_col @de_dol XX XX XX
   _    @de_excl @de_ast @de_slsh @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_dquo @de_bsls XX
@@ -157,7 +166,7 @@
 )
 
 (deflayer nav
-  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  _    _    _    _    _    _    _    _    _    _    _    _    _
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
   _    A-tab M-tab @vd_l @vd_r f4   C-y   home    @sel_w end   XX   XX   _ _
   _    @n_sh_a esc  bspc del   XX   left down up    rght ret _    _
