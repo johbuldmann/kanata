@@ -17,6 +17,8 @@ if (!ErrorLevel) {
 }
 
 /*
+zum debuggen dieser befehl zum starten in cmd
+kanata_windows_gui_winIOv2_cmd_allowed_x64.exe --cfg kanata.kbd --debug
 ================================================================================
 ÜBERSICHT DER KANATA EXE-DATEIEN (FÜR DEN ARBEITSRECHNER)
 ================================================================================

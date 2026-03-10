@@ -1,4 +1,4 @@
-;; Kanata Config: Fixed Positional Home Row Mods
+;; Kanata Config: Fixed Positional Home Row Mods + Mouse-Thumb-Symbol-Layer
 (defcfg
   process-unmapped-keys yes
 )
@@ -10,7 +10,6 @@
   idle-timeout 150
 
   ;; --- Definition der physischen Tasten-Listen ---
-  ;; Diese MÜSSEN den Tasten aus dem defsrc entsprechen
   left-hand-keys (
     q w e r t
     a s d f g
@@ -38,18 +37,18 @@
   nav_spc (tap-hold $tap-timeout $hold-timeout spc (layer-toggle nav))
   sym_v   (tap-hold $tap-timeout $hold-timeout v (layer-toggle symbols))
   sym_n   (tap-hold $tap-timeout $hold-timeout n (layer-toggle symbols))
+  
+  ;; NEU: F23 (via AHK) aktiviert den Symbol-Layer
+  sym_mouse (layer-toggle symbols)
+  
   -_met   (tap-hold $tap-timeout $hold-timeout / rmet)
 
   ;; --- POSITIONAL HOME ROW MODS (Bilateral via except-keys) ---
-  ;; Logik: Modifikator wird NICHT aktiviert, wenn eine Taste der GLEICHEN Hand gedrückt wird.
-
-  ;; Linke Hand
   a_met (tap-hold-release $tap-timeout 300 a lmet)
   s_alt (tap-hold-release $tap-timeout 300 s lalt)
   d_sft (tap-hold-release $tap-timeout 300 d lsft)
   f_ctl (tap-hold-release $tap-timeout 300 f lctl)
 
-  ;; Rechte Hand
   j_ctl (tap-hold-release $tap-timeout 300 j rctl)
   k_sft (tap-hold-release $tap-timeout 300 k rsft)
   l_alt (tap-hold-release $tap-timeout 300 l lalt)
@@ -106,7 +105,8 @@
   tab  q    w    e    r    t    y    u    i    o    p    [    ]    ret
   caps a    s    d    f    g    h    j    k    l    ;    '    \
   lsft 102d z    x    c    v    b    n    m    ,    .    /    rsft
-  lctl lmet lalt           spc            ralt rctl
+  lctl lmet lalt            spc            ralt rctl
+  mmid
 )
 
 (defchords combos 35
@@ -131,6 +131,7 @@
   _    @ch_a @ch_s @ch_d @ch_f @ch_g @ch_h @ch_j @ch_k @ch_l @ch_sem @ch_quo @ch_bsl
   lsft @ch_102 @ch_y_bot @ch_x @ch_c @ch_v @ch_b @ch_n @ch_m @ch_com @ch_dot @-_met _
   lctl lmet lalt            @nav_spc       ralt rctl
+  (layer-toggle symbols)
 )
 
 (deflayer nomods
@@ -140,6 +141,7 @@
   _    (t! t_raw a) (t! t_raw s) (t! t_raw d) (t! t_raw f) (t! t_raw g) (t! t_raw h) (t! t_raw j) (t! t_raw k) (t! t_raw l) (t! t_raw ;) _ _
   _    (t! t_raw 102d) (t! t_raw z) (t! t_raw x) (t! t_raw c) @sym_v (t! t_raw b) @sym_n (t! t_raw m) (t! t_raw ,) (t! t_raw .) _ _
   _    _    _              @nav_spc       _    _
+  @sym_mouse
 )
 
 (deflayer symbols
@@ -149,6 +151,7 @@
   _    @de_excl @de_ast @de_slsh @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_dquo @de_bsls XX
   _    @de_til @de_plus @de_lbkt @de_rbkt @de_pipe _ @de_at @de_dol , . @de_und XX
   _    _    _              _              _    _
+  _ ;; Bleibt im Layer, solange gehalten
 )
 
 (deflayer nav
@@ -158,4 +161,5 @@
   _    @n_sh_a esc  bspc del   XX   left down up    rght ret _    _
   _    lrld @n_gui_y @n_alt_x @n_sft_c @n_ctl_v @v_spec C-left @n_ctl_pd @n_sft_pu @n_alt_cr lmet rctl
   _    _    _              _              _    _
+  _
 )
