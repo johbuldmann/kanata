@@ -1,4 +1,4 @@
-;; Kanata Config: Fixed Positional Home Row Mods + Mouse-Thumb-Symbol-Layer
+;; Kanata Config: Fixed Positional Home Row Mods + Direct Mouse-Middle Symbol Layer
 (defcfg
   process-unmapped-keys yes
 )
@@ -38,12 +38,7 @@
   sym_v   (tap-hold $tap-timeout $hold-timeout v (layer-toggle symbols))
   sym_n   (tap-hold $tap-timeout $hold-timeout n (layer-toggle symbols))
   
-  ;; NEU: F23 (via AHK) aktiviert den Symbol-Layer
-  sym_mouse (layer-toggle symbols)
-  
-  -_met   (tap-hold $tap-timeout $hold-timeout / rmet)
-
-  ;; --- POSITIONAL HOME ROW MODS (Bilateral via except-keys) ---
+  ;; --- POSITIONAL HOME ROW MODS ---
   a_met (tap-hold-release $tap-timeout 300 a lmet)
   s_alt (tap-hold-release $tap-timeout 300 s lalt)
   d_sft (tap-hold-release $tap-timeout 300 d lsft)
@@ -93,6 +88,8 @@
   n_ctl_pd (tap-hold 200 200 pgdn rctl)
   n_sft_pu (tap-hold 200 200 pgup rsft)
   n_alt_cr (tap-hold 200 200 C-right lalt)
+  
+  -_met   (tap-hold $tap-timeout $hold-timeout / rmet)
 )
 
 (defvirtualkeys
@@ -141,7 +138,7 @@
   _    (t! t_raw a) (t! t_raw s) (t! t_raw d) (t! t_raw f) (t! t_raw g) (t! t_raw h) (t! t_raw j) (t! t_raw k) (t! t_raw l) (t! t_raw ;) _ _
   _    (t! t_raw 102d) (t! t_raw z) (t! t_raw x) (t! t_raw c) @sym_v (t! t_raw b) @sym_n (t! t_raw m) (t! t_raw ,) (t! t_raw .) _ _
   _    _    _              @nav_spc       _    _
-  @sym_mouse
+  (layer-toggle symbols)
 )
 
 (deflayer symbols
@@ -151,7 +148,7 @@
   _    @de_excl @de_ast @de_slsh @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_dquo @de_bsls XX
   _    @de_til @de_plus @de_lbkt @de_rbkt @de_pipe _ @de_at @de_dol , . @de_und XX
   _    _    _              _              _    _
-  _ ;; Bleibt im Layer, solange gehalten
+  _
 )
 
 (deflayer nav
