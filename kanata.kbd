@@ -1,25 +1,15 @@
-;; Kanata Config: Fixed Positional Home Row Mods + Direct Mouse-Middle Symbol Layer
+;; Kanata Config: Classic Robust Setup (No Positional Logic)
 (defcfg
   process-unmapped-keys yes
 )
 
 (defvar
-  ;; Timings für schnelles Tippen
+  ;; Zeit-Variablen für ein stabiles Gefühl
   tap-timeout 180
-  hold-timeout 200
-  idle-timeout 150
-
-  ;; --- Definition der physischen Tasten-Listen ---
-  left-hand-keys (
-    q w e r t
-    a s d f g
-    lsft 102d z x c v b
-  )
-  right-hand-keys (
-    y u i o p [ ] ret
-    h j k l ; ' \
-    n m , . / rsft
-  )
+  hold-timeout 250      ;; Puffer für Meta, Alt, Ctrl
+  shift-hold-timeout 170 ;; Aggressiver für flüssiges Shift
+  spc-hold-timeout 200
+  idle-timeout 180
 )
 
 (deftemplate t_raw (key)
@@ -34,20 +24,29 @@
   )
 
   ;; --- Layer Toggles ---
-  nav_spc (tap-hold $tap-timeout $hold-timeout spc (layer-toggle nav))
+  ;; Nav-Space (Nur im Default-Layer aktiv)
+  nav_spc (tap-hold $tap-timeout $spc-hold-timeout spc (layer-toggle nav))
+  
+  ;; Symbol-Trigger via Tasten (Optional)
   sym_v   (tap-hold $tap-timeout $hold-timeout v (layer-toggle symbols))
   sym_n   (tap-hold $tap-timeout $hold-timeout n (layer-toggle symbols))
   
-  ;; --- POSITIONAL HOME ROW MODS ---
-  a_met (tap-hold-release $tap-timeout 300 a lmet)
-  s_alt (tap-hold-release $tap-timeout 300 s lalt)
-  d_sft (tap-hold-release $tap-timeout 300 d lsft)
-  f_ctl (tap-hold-release $tap-timeout 300 f lctl)
+  -_met   (tap-hold $tap-timeout $hold-timeout / rmet)
 
-  j_ctl (tap-hold-release $tap-timeout 300 j rctl)
-  k_sft (tap-hold-release $tap-timeout 300 k rsft)
-  l_alt (tap-hold-release $tap-timeout 300 l lalt)
-  sem_met (tap-hold-release $tap-timeout 300 ; rmet)
+  ;; --- KLASSISCHE HOME ROW MODS (Sauber & Schnell) ---
+  ;; Wir nutzen 'tap-hold', damit Shortcuts wie Ctrl+S sofort greifen.
+  
+  ;; Linke Hand
+  a_met (tap-hold $tap-timeout $hold-timeout a lmet)
+  s_alt (tap-hold $tap-timeout $hold-timeout s lalt)
+  d_sft (tap-hold $tap-timeout $shift-hold-timeout d lsft)
+  f_ctl (tap-hold $tap-timeout $hold-timeout f lctl)
+
+  ;; Rechte Hand
+  j_ctl (tap-hold $tap-timeout $hold-timeout j rctl)
+  k_sft (tap-hold $tap-timeout $shift-hold-timeout k rsft)
+  l_alt (tap-hold $tap-timeout $hold-timeout l lalt)
+  sem_met (tap-hold $tap-timeout $hold-timeout ; rmet)
 
   ;; --- Symbole ---
   de_lbrc RA-7  de_rbrc RA-0  de_lbkt RA-8  de_rbkt RA-9
@@ -63,7 +62,7 @@
   q_sym (tap-hold 200 200 @de_sqt @m_gv_spc)    
   w_sym (tap-hold 200 200 @de_min @m_bt3_spc)   
 
-  ;; Chords Aliase
+  ;; Chords (Kürzel)
   ch_esc (chord combos esc)  ch_f1  (chord combos f1)
   ch_w   (chord combos w)    ch_e   (chord combos e)
   ch_a   (chord combos a)    ch_s   (chord combos s)    ch_d (chord combos d) ch_f (chord combos f)
@@ -88,8 +87,6 @@
   n_ctl_pd (tap-hold 200 200 pgdn rctl)
   n_sft_pu (tap-hold 200 200 pgup rsft)
   n_alt_cr (tap-hold 200 200 C-right lalt)
-  
-  -_met   (tap-hold $tap-timeout $hold-timeout / rmet)
 )
 
 (defvirtualkeys
@@ -114,7 +111,7 @@
   (esc) esc (f1) f1 (w) w (e) e (g) g (h) h (y) y (u) u (i) i (o) o 
   (') ' (\) \ (b) b (102d) 102d (z) z (x) x (c) c (m) m (,) , (.) .
 
-  ;; --- Home Row Mods via Alias ---
+  ;; --- HRM via Alias ---
   (a) @a_met (s) @s_alt (d) @d_sft (f) @f_ctl
   (j) @j_ctl (k) @k_sft (l) @l_alt (;) @sem_met
 
@@ -137,7 +134,7 @@
   _    (t! t_raw q) (t! t_raw w) (t! t_raw e) (t! t_raw r) (t! t_raw t) (t! t_raw y) (t! t_raw u) (t! t_raw i) (t! t_raw o) (t! t_raw p) _ _ _
   _    (t! t_raw a) (t! t_raw s) (t! t_raw d) (t! t_raw f) (t! t_raw g) (t! t_raw h) (t! t_raw j) (t! t_raw k) (t! t_raw l) (t! t_raw ;) _ _
   _    (t! t_raw 102d) (t! t_raw z) (t! t_raw x) (t! t_raw c) @sym_v (t! t_raw b) @sym_n (t! t_raw m) (t! t_raw ,) (t! t_raw .) _ _
-  _    _    _              @nav_spc       _    _
+  _    _    _              spc            _    _
   (layer-toggle symbols)
 )
 
@@ -152,7 +149,7 @@
 )
 
 (deflayer nav
-  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _   _   prev pp   next _    _    prnt    mute vold volu    ;; Physische F-Tasten
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
   _    A-tab M-tab @vd_l @vd_r f4   C-y   home    @sel_w end   XX   XX   _ _
   _    @n_sh_a esc  bspc del   XX   left down up    rght ret _    _
