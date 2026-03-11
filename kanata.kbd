@@ -104,7 +104,7 @@
 )
 
 (defchords combos 35
-  (esc f1) f24 (w e) f24 (d f) A-spc (s d) A-w (y u) C-y (u i) C-bspc (i o) C-bspc
+  (esc f1) f24 (w e) f24 (d f) A-spc (s d) A-w (y u) C-y (u i) C-bspc (i o) C-del
   (j k) bspc (k l) del (d k) esc (102d z) C-y (z x) C-x (x c) C-c (c v) C-v (v b) M-v
   (; ') (tap-hold $tap-timeout $hold-timeout C-c C-x) (' \) C-v (, .) S-min (m ,) S-1
 
