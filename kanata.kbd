@@ -1,4 +1,4 @@
-;; Kanata Config: Classic Robust Setup (No Positional Logic)
+;; Kanata Config: Symbol Layer auf E und I (Mittelfinger oben)
 (defcfg
   process-unmapped-keys yes
 )
@@ -24,25 +24,20 @@
   )
 
   ;; --- Layer Toggles ---
-  ;; Nav-Space (Nur im Default-Layer aktiv)
   nav_spc (tap-hold $tap-timeout $spc-hold-timeout spc (layer-toggle nav))
   
-  ;; Symbol-Trigger via Tasten (Optional)
-  sym_v   (tap-hold $tap-timeout $hold-timeout v (layer-toggle symbols))
-  sym_n   (tap-hold $tap-timeout $hold-timeout n (layer-toggle symbols))
+  ;; NEU: Symbol-Trigger auf e und i
+  sym_e   (tap-hold $tap-timeout $hold-timeout e (layer-toggle symbols))
+  sym_i   (tap-hold $tap-timeout $hold-timeout i (layer-toggle symbols))
   
   -_met   (tap-hold $tap-timeout $hold-timeout / rmet)
 
-  ;; --- KLASSISCHE HOME ROW MODS (Sauber & Schnell) ---
-  ;; Wir nutzen 'tap-hold', damit Shortcuts wie Ctrl+S sofort greifen.
-  
-  ;; Linke Hand
+  ;; --- KLASSISCHE HOME ROW MODS ---
   a_met (tap-hold $tap-timeout $hold-timeout a lmet)
   s_alt (tap-hold $tap-timeout $hold-timeout s lalt)
   d_sft (tap-hold $tap-timeout $shift-hold-timeout d lsft)
   f_ctl (tap-hold $tap-timeout $hold-timeout f lctl)
 
-  ;; Rechte Hand
   j_ctl (tap-hold $tap-timeout $hold-timeout j rctl)
   k_sft (tap-hold $tap-timeout $shift-hold-timeout k rsft)
   l_alt (tap-hold $tap-timeout $hold-timeout l lalt)
@@ -108,14 +103,18 @@
   (j k) bspc (k l) del (d k) esc (102d z) C-y (z x) C-x (x c) C-c (c v) C-v (v b) M-v
   (; ') (tap-hold $tap-timeout $hold-timeout C-c C-x) (' \) C-v (, .) S-min (m ,) S-1
 
-  (esc) esc (f1) f1 (w) w (e) e (g) g (h) h (y) y (u) u (i) i (o) o 
+  (esc) esc (f1) f1 (w) w (g) g (h) h (y) y (u) u (o) o 
   (') ' (\) \ (b) b (102d) 102d (z) z (x) x (c) c (m) m (,) , (.) .
 
-  ;; --- HRM via Alias ---
+  ;; --- HRM & NEU: Symbol Trigger via Alias ---
   (a) @a_met (s) @s_alt (d) @d_sft (f) @f_ctl
   (j) @j_ctl (k) @k_sft (l) @l_alt (;) @sem_met
 
-  (v) @sym_v (n) @sym_n
+  (e) @sym_e 
+  (i) @sym_i
+  
+  (v) v 
+  (n) n
 )
 
 (deflayer default
@@ -125,7 +124,7 @@
   _    @ch_a @ch_s @ch_d @ch_f @ch_g @ch_h @ch_j @ch_k @ch_l @ch_sem @ch_quo @ch_bsl
   lsft @ch_102 @ch_y_bot @ch_x @ch_c @ch_v @ch_b @ch_n @ch_m @ch_com @ch_dot @-_met _
   lctl lmet lalt            @nav_spc       ralt rctl
-  (layer-toggle symbols)
+  mmid
 )
 
 (deflayer nomods
@@ -133,7 +132,7 @@
   _    (t! t_raw 1) (t! t_raw 2) (t! t_raw 3) (t! t_raw 4) (t! t_raw 5) (t! t_raw 6) (t! t_raw 7) (t! t_raw 8) (t! t_raw 9) (t! t_raw 0) _ _ _
   _    (t! t_raw q) (t! t_raw w) (t! t_raw e) (t! t_raw r) (t! t_raw t) (t! t_raw y) (t! t_raw u) (t! t_raw i) (t! t_raw o) (t! t_raw p) _ _ _
   _    (t! t_raw a) (t! t_raw s) (t! t_raw d) (t! t_raw f) (t! t_raw g) (t! t_raw h) (t! t_raw j) (t! t_raw k) (t! t_raw l) (t! t_raw ;) _ _
-  _    (t! t_raw 102d) (t! t_raw z) (t! t_raw x) (t! t_raw c) @sym_v (t! t_raw b) @sym_n (t! t_raw m) (t! t_raw ,) (t! t_raw .) _ _
+  _    (t! t_raw 102d) (t! t_raw z) (t! t_raw x) (t! t_raw c) v (t! t_raw b) n (t! t_raw m) (t! t_raw ,) (t! t_raw .) _ _
   _    _    _              spc            _    _
   (layer-toggle symbols)
 )
@@ -149,9 +148,9 @@
 )
 
 (deflayer nav
-  _    _    _   _   prev pp   next _    _    prnt    mute vold volu    ;; Physische F-Tasten
+  _    _    _  _    prev pp   next     _    _    prnt  mute vold volu    ;; Physische F-Tasten
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
-  _    A-tab M-tab @vd_l @vd_r f4   C-y   home    @sel_w end   XX   XX   _ _
+  _    A-tab M-tab @vd_l @vd_r f4   C-y   home  @sel_w end   XX   XX   _ _
   _    @n_sh_a esc  bspc del   XX   left down up    rght ret _    _
   _    lrld @n_gui_y @n_alt_x @n_sft_c @n_ctl_v @v_spec C-left @n_ctl_pd @n_sft_pu @n_alt_cr lmet rctl
   _    _    _              _              _    _
