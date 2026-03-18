@@ -1,4 +1,4 @@
-;; Kanata Config: Symbol Layer auf E und I (Mittelfinger oben)
+;; Kanata Config: Symbol Layer Update (Q=Backtick+Space Macro)
 (defcfg
   process-unmapped-keys yes
 )
@@ -26,7 +26,7 @@
   ;; --- Layer Toggles ---
   nav_spc (tap-hold $tap-timeout $spc-hold-timeout spc (layer-toggle nav))
   
-  ;; NEU: Symbol-Trigger auf e und i
+  ;; Symbol-Trigger auf e und i
   sym_e   (tap-hold $tap-timeout $hold-timeout e (layer-toggle symbols))
   sym_i   (tap-hold $tap-timeout $hold-timeout i (layer-toggle symbols))
   
@@ -50,11 +50,17 @@
   de_perc S-5  de_col S-.  de_dol S-4  de_excl S-1  de_ast S-]
   de_slsh S-7  de_eql S-0  de_amp S-6  de_hash \  de_lpar S-8
   de_rpar S-9  de_semi S-,  de_dquo S-2  de_plus ]  de_und S-/
+  de_euro RA-e
+  
+  ;; Backtick-Makro gegen Dead-Key-Verhalten
+  m_tick_spc (macro S-= spc)
 
   m_gv_spc (macro S-= spc)  
   m_car_spc (macro grv spc) 
   m_bt3_spc (macro S-= spc S-= spc S-= spc)
-  q_sym (tap-hold 200 200 @de_sqt @m_gv_spc)    
+  
+  ;; Neue Mod-Taps für den Symbol Layer
+  e_sym_euro (tap-hold 200 200 @de_lt @de_euro)
   w_sym (tap-hold 200 200 @de_min @m_bt3_spc)   
 
   ;; Chords (Kürzel)
@@ -140,15 +146,15 @@
 (deflayer symbols
   _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  XX   @q_sym @w_sym @de_lt @de_gt @de_perc @m_car_spc @de_lbrc @de_rbrc @de_col @de_dol XX XX XX
-  _    @de_excl @de_ast @de_slsh @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_dquo @de_bsls XX
-  _    @de_til @de_plus @de_lbkt @de_rbkt @de_pipe _ @de_at @de_dol , . @de_und XX
+  XX   @m_tick_spc @w_sym @e_sym_euro @de_gt @de_perc @m_car_spc @de_lbrc @de_rbrc @de_col @de_dol XX XX XX
+  _    @de_excl @de_ast @de_slsh @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_dquo @de_sqt XX
+  _    @de_til @de_plus @de_lbkt @de_rbkt @de_pipe _ @de_at @de_dol , . @de_bsls XX
   _    _    _              _              _    _
   _
 )
 
 (deflayer nav
-  _    _    _  _    prev pp   next     _    _    prnt  mute vold volu    ;; Physische F-Tasten
+  _    _    _    _    prev pp   next     _    _    prnt  mute vold volu    ;; Physische F-Tasten
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
   _    A-tab M-tab @vd_l @vd_r f4   C-y   home  @sel_w end   XX   XX   _ _
   _    @n_sh_a esc  bspc del   XX   left down up    rght ret _    _
