@@ -130,7 +130,7 @@
   _    @ch_a @ch_s @ch_d @ch_f @ch_g @ch_h @ch_j @ch_k @ch_l @ch_sem @ch_quo @ch_bsl
   lsft @ch_102 @ch_y_bot @ch_x @ch_c @ch_v @ch_b @ch_n @ch_m @ch_com @ch_dot @-_met _
   lctl lmet lalt            @nav_spc       ralt rctl
-  mmid
+  (layer-toggle symbols)
 )
 
 (deflayer nomods
@@ -148,7 +148,7 @@
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   XX   @m_tick_spc @w_sym @e_sym_euro @de_gt @de_perc @m_car_spc @de_lbrc @de_rbrc @de_col @de_dol XX XX XX
   _    @de_excl @de_ast @de_slsh @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_dquo @de_sqt XX
-  _    @de_til @de_plus @de_lbkt @de_rbkt @de_pipe _ @de_at @de_dol , . @de_bsls XX
+  _    @de_til @de_plus @de_lbkt @de_rbkt @de_pipe _ @de_at @de_und , . @de_bsls XX
   _    _    _              _              _    _
   _
 )
