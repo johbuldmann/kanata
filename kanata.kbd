@@ -1,19 +1,66 @@
 ;; Kanata Config: Symbol Layer Update (Q=Backtick+Space Macro)
 (defcfg
   process-unmapped-keys yes
+  concurrent-tap-hold yes
 )
 
 (defvar
   ;; Zeit-Variablen für ein stabiles Gefühl
   tap-timeout 180
-  hold-timeout 250      ;; Puffer für Meta, Alt, Ctrl
-  shift-hold-timeout 170 ;; Aggressiver für flüssiges Shift
+  quick-tap-ms 200          ;; = ZMK quick-tap-ms ($tap-repress-timeout in Kanata)
+  hold-timeout 280          ;; Mehr Puffer → weniger accidental activations
+  shift-hold-timeout 200    ;; Shift etwas sanfter, trotzdem schnell
   spc-hold-timeout 200
   idle-timeout 180
+
+  ;; Side-Key-Listen für urob-style HRMs
+  left-side-keys   (q w e r t 102d z x c v b)
+  right-side-keys  (y u i o p n m , . /)
+  home-row-left-keys  (a s d f g)
+  home-row-right-keys (j k l ;)
 )
 
 (deftemplate t_raw (key)
   (multi $key @tap_log)
+)
+
+;; urob-style timeless HRMs — linke Hand
+(deftemplate lhrm (tap-key hold-key)
+  (tap-hold-release-tap-keys-release
+    $quick-tap-ms $hold-timeout
+    (multi $tap-key @tap_log)
+    $hold-key
+    $left-side-keys
+    $home-row-left-keys)
+)
+
+;; urob-style timeless HRMs — rechte Hand
+(deftemplate rhrm (tap-key hold-key)
+  (tap-hold-release-tap-keys-release
+    $quick-tap-ms $hold-timeout
+    (multi $tap-key @tap_log)
+    $hold-key
+    $right-side-keys
+    $home-row-right-keys)
+)
+
+;; Shift-Varianten mit kürzerem Timeout
+(deftemplate lhrm_sft (tap-key hold-key)
+  (tap-hold-release-tap-keys-release
+    $quick-tap-ms $shift-hold-timeout
+    (multi $tap-key @tap_log)
+    $hold-key
+    $left-side-keys
+    $home-row-left-keys)
+)
+
+(deftemplate rhrm_sft (tap-key hold-key)
+  (tap-hold-release-tap-keys-release
+    $quick-tap-ms $shift-hold-timeout
+    (multi $tap-key @tap_log)
+    $hold-key
+    $right-side-keys
+    $home-row-right-keys)
 )
 
 (defalias
@@ -32,16 +79,16 @@
   
   -_met   (tap-hold $tap-timeout $hold-timeout / rmet)
 
-  ;; --- KLASSISCHE HOME ROW MODS ---
-  a_met (tap-hold $tap-timeout $hold-timeout a lmet)
-  s_alt (tap-hold $tap-timeout $hold-timeout s lalt)
-  d_sft (tap-hold $tap-timeout $shift-hold-timeout d lsft)
-  f_ctl (tap-hold $tap-timeout $hold-timeout f lctl)
+  ;; --- HOME ROW MODS (urob-style timeless) ---
+  a_met   (t! lhrm     a lmet)
+  s_alt   (t! lhrm     s lalt)
+  d_sft   (t! lhrm_sft d lsft)
+  f_ctl   (t! lhrm     f lctl)
 
-  j_ctl (tap-hold $tap-timeout $hold-timeout j rctl)
-  k_sft (tap-hold $tap-timeout $shift-hold-timeout k rsft)
-  l_alt (tap-hold $tap-timeout $hold-timeout l lalt)
-  sem_met (tap-hold $tap-timeout $hold-timeout ; rmet)
+  j_ctl   (t! rhrm     j rctl)
+  k_sft   (t! rhrm_sft k rsft)
+  l_alt   (t! rhrm     l lalt)
+  sem_met (t! rhrm     ; rmet)
 
   ;; --- Symbole ---
   de_lbrc RA-7  de_rbrc RA-0  de_lbkt RA-8  de_rbkt RA-9
@@ -136,7 +183,7 @@
   _    _    _    _    _    _    _    _    _    _    _    _    _
   _    (t! t_raw 1) (t! t_raw 2) (t! t_raw 3) (t! t_raw 4) (t! t_raw 5) (t! t_raw 6) (t! t_raw 7) (t! t_raw 8) (t! t_raw 9) (t! t_raw 0) _ _ _
   _    (t! t_raw q) (t! t_raw w) (t! t_raw e) (t! t_raw r) (t! t_raw t) (t! t_raw y) (t! t_raw u) (t! t_raw i) (t! t_raw o) (t! t_raw p) _ _ _
-  _    (t! t_raw a) (t! t_raw s) (t! t_raw d) (t! t_raw f) (t! t_raw g) (t! t_raw h) (t! t_raw j) (t! t_raw k) (t! t_raw l) (t! t_raw ;) _ _
+  _    (t! t_raw a) (t! t_raw s) @d_sft (t! t_raw f) (t! t_raw g) (t! t_raw h) (t! t_raw j) @k_sft (t! t_raw l) (t! t_raw ;) _ _
   _    (t! t_raw 102d) (t! t_raw z) (t! t_raw x) (t! t_raw c) v (t! t_raw b) n (t! t_raw m) (t! t_raw ,) (t! t_raw .) _ _
   _    _    _              spc            _    _
 )
