@@ -109,7 +109,12 @@
   
   ;; Neue Mod-Taps für den Symbol Layer
   e_sym_euro (tap-hold 200 200 @de_lt @de_euro)
-  w_sym (tap-hold 200 200 @de_min @m_bt3_spc)   
+  w_sym (tap-hold 200 200 @de_min @m_bt3_spc)
+
+  ;; --- Symbol Layer Tap-Holds & Sonderzeichen ---
+  sym_f24      (tap-hold $tap-timeout $hold-timeout f24 S-f24)
+  sym_sqt_excl (tap-hold $tap-timeout $hold-timeout @de_sqt @de_excl)
+  sym_deg_car  (tap-hold $tap-timeout $hold-timeout (unicode °) (unicode ^))
 
   ;; Chords (Kürzel)
   ch_esc (chord combos esc)  ch_f1  (chord combos f1)
@@ -152,7 +157,7 @@
 )
 
 (defchords combos 35
-  (esc f1) f24 (w e) f24 (d f) A-spc (s d) A-w (y u) C-y (u i) C-bspc (i o) C-del
+  (esc f1) f24 (w e) f24 (d f) (tap-hold $tap-timeout $hold-timeout f24 S-f24) (f g) A-spc (s d) A-w (y u) C-y (u i) C-bspc (i o) C-del
   (j k) bspc (k l) del (d k) esc (102d z) C-y (z x) C-x (x c) C-c (c v) C-v (v b) M-v
   (; ') (tap-hold $tap-timeout $hold-timeout C-c C-x) (' \) C-v (, .) S-min (m ,) S-1
 
@@ -190,11 +195,11 @@
 
 (deflayer symbols
   _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  @sym_deg_car (unicode „) (unicode „) (unicode «) (unicode ») (unicode •) (unicode ×) (unicode ÷) (unicode ±) (unicode ≈) (unicode …) (unicode —) _ _
   XX   @m_tick_spc @w_sym @e_sym_euro @de_gt @de_perc @m_car_spc @de_lbrc @de_rbrc @de_col @de_dol XX XX XX
-  _    @de_excl @de_ast @de_slsh @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_dquo @de_sqt XX
-  _    @de_til @de_plus @de_lbkt @de_rbkt @de_pipe _ @de_at @de_und , . @de_bsls XX
-  _    _    _              _              _    _
+  _    @sym_sqt_excl @de_ast @de_slsh @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_dquo @de_bsls XX
+  _    @de_til @de_plus @de_lbkt @de_rbkt @de_pipe @sym_f24 @de_at @de_und , . @de_und XX
+  _    _    _              spc              _    _
 )
 
 (deflayer nav
