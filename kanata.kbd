@@ -9,7 +9,7 @@
   tap-timeout 180
   quick-tap-ms 200          ;; = ZMK quick-tap-ms ($tap-repress-timeout in Kanata)
   hold-timeout 280          ;; Mehr Puffer → weniger accidental activations
-  shift-hold-timeout 200    ;; Shift etwas sanfter, trotzdem schnell
+  shift-hold-timeout 250    ;; Shift defensiver gegen accidental activations
   spc-hold-timeout 200
   idle-timeout 180
 
@@ -44,14 +44,14 @@
     $home-row-right-keys)
 )
 
-;; Shift-Varianten mit kürzerem Timeout
+;; Shift-Varianten: 'a' im Sofort-Tap (fix für 'das'→'As'), s/f/g bleiben delayed
 (deftemplate lhrm_sft (tap-key hold-key)
   (tap-hold-release-tap-keys-release
     $quick-tap-ms $shift-hold-timeout
     (multi $tap-key @tap_log)
     $hold-key
-    $left-side-keys
-    $home-row-left-keys)
+    (q w e r t 102d z x c v b a)
+    (s f g))
 )
 
 (deftemplate rhrm_sft (tap-key hold-key)
