@@ -51,6 +51,7 @@
   de_slsh S-7  de_eql S-0  de_amp S-6  de_hash \  de_lpar S-8
   de_rpar S-9  de_semi S-,  de_dquo S-2  de_plus ]  de_und S-/
   de_euro RA-e
+  wispr S-f23
   
   ;; Backtick-Makro gegen Dead-Key-Verhalten
   m_tick_spc (macro S-= spc)
@@ -101,7 +102,6 @@
   caps a    s    d    f    g    h    j    k    l    ;    '    \
   lsft 102d z    x    c    v    b    n    m    ,    .    /    rsft
   lctl lmet lalt            spc            ralt rctl
-  mmid
 )
 
 (defchords combos 35
@@ -130,7 +130,6 @@
   _    @ch_a @ch_s @ch_d @ch_f @ch_g @ch_h @ch_j @ch_k @ch_l @ch_sem @ch_quo @ch_bsl
   lsft @ch_102 @ch_y_bot @ch_x @ch_c @ch_v @ch_b @ch_n @ch_m @ch_com @ch_dot @-_met _
   lctl lmet lalt            @nav_spc       ralt rctl
-  (layer-toggle symbols)
 )
 
 (deflayer nomods
@@ -140,7 +139,6 @@
   _    (t! t_raw a) (t! t_raw s) (t! t_raw d) (t! t_raw f) (t! t_raw g) (t! t_raw h) (t! t_raw j) (t! t_raw k) (t! t_raw l) (t! t_raw ;) _ _
   _    (t! t_raw 102d) (t! t_raw z) (t! t_raw x) (t! t_raw c) v (t! t_raw b) n (t! t_raw m) (t! t_raw ,) (t! t_raw .) _ _
   _    _    _              spc            _    _
-  (layer-toggle symbols)
 )
 
 (deflayer symbols
@@ -150,7 +148,6 @@
   _    @de_excl @de_ast @de_slsh @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_dquo @de_sqt XX
   _    @de_til @de_plus @de_lbkt @de_rbkt @de_pipe _ @de_at @de_und , . @de_bsls XX
   _    _    _              _              _    _
-  _
 )
 
 (deflayer nav
@@ -158,7 +155,6 @@
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
   _    A-tab M-tab @vd_l @vd_r f4   C-y   home  @sel_w end   XX   XX   _ _
   _    @n_sh_a esc  bspc del   XX   left down up    rght ret _    _
-  _    lrld @n_gui_y @n_alt_x @n_sft_c @n_ctl_v @v_spec C-left @n_ctl_pd @n_sft_pu @n_alt_cr lmet rctl
+  @wispr lrld @n_gui_y @n_alt_x @n_sft_c @n_ctl_v @v_spec C-left @n_ctl_pd @n_sft_pu @n_alt_cr lmet rctl
   _    _    _              _              _    _
-  _
 )
