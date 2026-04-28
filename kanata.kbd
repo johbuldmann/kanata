@@ -131,6 +131,9 @@
   ch_v   (chord combos v)    ch_b   (chord combos b)    ch_n (chord combos n) ch_m (chord combos m)
   ch_com (chord combos ,)    ch_dot (chord combos .)
 
+  nav_f (chord nav_chords f)
+  nav_g (chord nav_chords g)
+
   vd_l (tap-hold 150 150 f1 C-M-left)
   vd_r (tap-hold 150 150 f2 C-M-right)
   sel_w (macro C-left C-S-right)
@@ -158,8 +161,8 @@
   lctl lmet lalt            spc            ralt rctl
 )
 
-(defchords combos 35
-  (esc f1) f24 (w e) f24 (d f) (tap-hold $tap-timeout $hold-timeout f24 S-f24) (f g) (tap-hold $tap-timeout $hold-timeout A-spc A-w) (s d) A-w (y u) C-y (u i) C-bspc (i o) C-del
+(defchords combos 45
+  (esc f1) f24 (w e) C-f24 (d f) (tap-hold $tap-timeout $hold-timeout f24 S-f24) (f g) (tap-hold $tap-timeout $hold-timeout A-spc A-w) (s d) A-w (y u) C-y (u i) C-bspc (i o) C-del
   (j k) bspc (k l) del (d k) esc (102d z) C-y (z x) C-x (x c) C-c (c v) C-v (v b) M-v
   (; ') (tap-hold $tap-timeout $hold-timeout C-c C-x) (' \) C-v (, .) S-min (m ,) S-1
 
@@ -175,6 +178,12 @@
   
   (v) v 
   (n) n
+)
+
+(defchords nav_chords 35
+  (f g) f17
+  (f) del
+  (g) @wispr
 )
 
 (deflayer default
@@ -197,7 +206,7 @@
 
 (deflayer symbols
   _    _    _    _    _    _    _    _    _    _    _    _    _
-  @sym_deg_car (unicode „) (unicode “) (unicode «) (unicode ») (unicode •) (unicode ×) (unicode ÷) (unicode ±) (unicode ≈) (unicode …) @sym_dash _ _
+  @sym_deg_car (unicode „) (unicode “) (unicode «) (unicode ») (unicode •) (unicode ±) (unicode ×) (unicode ÷) (unicode ≈) (unicode …) @sym_dash _ _
   XX   @m_tick_spc @w_sym @e_sym_euro @de_gt @de_perc @m_car_spc @de_lbrc @de_rbrc @de_col @de_dol XX XX XX
   _    @sym_sqt_excl @de_ast @de_slsh @de_eql @de_amp @de_hash @de_lpar @de_rpar @de_semi @de_dquo @de_bsls XX
   _    @de_til @de_plus @de_lbkt @de_rbkt @de_pipe @sym_f24 @de_at @de_und , . @de_und XX
@@ -208,7 +217,7 @@
   _    _    _    _    prev pp   next     _    _    prnt  mute vold volu    ;; Physische F-Tasten
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12  _
   _    A-tab M-tab @vd_l @vd_r f4   C-y   home  @sel_w end   XX   XX   _ _
-  _    @n_sh_a esc  bspc del   XX   left down up    rght ret _    _
+  _    @n_sh_a esc  bspc @nav_f @nav_g left down up    rght ret _    _
   @wispr lrld @n_gui_y @n_alt_x @n_sft_c @n_ctl_v @v_spec C-left @n_ctl_pd @n_sft_pu @n_alt_cr lmet rctl
   _    _    _              _              _    _
 )

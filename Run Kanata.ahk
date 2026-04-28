@@ -3,6 +3,7 @@ SetWorkingDir %A_ScriptDir%
 KanataExe := "kanata_windows_tty_winIOv2_x64.exe"
 ConfigFile := "kanata.kbd"
 
+; Run, "%KanataExe%" --cfg "%ConfigFile%"
 Run, wt.exe -w 0 new-tab -d "%A_ScriptDir%" cmd /k ""%KanataExe%" --cfg "%ConfigFile%""
 
 MsgBox, 64, Kanata Status, Kanata wurde gestartet!, 2
